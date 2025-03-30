@@ -7,6 +7,6 @@
 apt-get install libbacktrace-dev  
 
 #### libunwind_libdwfl  
-使用libunwind获得调用栈，使用libdwfl定位到代码  
+使用libunwind获得调用栈，使用libdwfl定位到代码，C和C++都可以  
 apt-get install libunwind-dev  
 apt-get install libdw-dev  
