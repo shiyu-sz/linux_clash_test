@@ -3,8 +3,6 @@
 
 #include <stdio.h>
 void DebugInfo(FILE *out, const void *ip);
-void __attribute__((noinline)) PrintStackTrace(FILE *out, int skip);
-void FuncC(void);
-void FuncB(void);
-void FuncA(void);
+void PrintStackTrace(FILE *out, int skip);
+
 #endif

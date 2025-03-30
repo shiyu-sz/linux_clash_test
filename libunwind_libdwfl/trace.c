@@ -9,7 +9,7 @@
 #include <libunwind.h>
 #include <elfutils/libdwfl.h>
 
-static void DebugInfo(FILE *out, const void *ip) {
+void DebugInfo(FILE *out, const void *ip) {
     char *debuginfo_path = NULL;
     Dwfl_Callbacks callbacks;
     callbacks.find_elf = dwfl_linux_proc_find_elf;
@@ -45,7 +45,7 @@ static void DebugInfo(FILE *out, const void *ip) {
     }
 }
 
-static void __attribute__((noinline)) PrintStackTrace(FILE *out, int skip) {
+void PrintStackTrace(FILE *out, int skip) {
     unw_context_t uc;
     unw_getcontext(&uc);
     unw_cursor_t cursor;
@@ -58,7 +58,7 @@ static void __attribute__((noinline)) PrintStackTrace(FILE *out, int skip) {
         char name[32];
         assert(unw_get_proc_name(&cursor, name, sizeof(name), &offset) == 0);
 
-        printf("(%s+0x%lx)\n", name, (long)offset);
+        printf("(%s+0x%lx) ", name, (long)offset);
 
         if (skip <= 0) {
             fprintf(out, "\tat ");
@@ -71,16 +71,4 @@ static void __attribute__((noinline)) PrintStackTrace(FILE *out, int skip) {
         }
         skip--;
     }
-}
-
-void FuncC(void) {
-    PrintStackTrace(stdout, 0);
-}
-
-void FuncB(void) {
-    FuncC();
-}
-
-void FuncA(void) {
-    FuncB();
 }

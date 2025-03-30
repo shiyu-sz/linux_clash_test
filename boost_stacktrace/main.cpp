@@ -1,5 +1,6 @@
+#include <iostream>
+#include <boost/stacktrace.hpp>
 #include <signal.h>	    /* for signal */
-#include "trace.h"
 
 void FuncC(void) {
     int ret = 0x00;
@@ -8,8 +9,6 @@ void FuncC(void) {
 	*pTemp = 0x01;  /* 这将导致一个段错误，致使程序崩溃退出 */
 	
 	ret = 1 + *pTemp;
-	
-	return ret;
 }
 
 void FuncB(void) {
@@ -22,7 +21,7 @@ void FuncA(void) {
 
 void signal_handler(int signo)
 {
-    PrintStackTrace(stdout, 0);
+    std::cout << "Current stack trace:\n" << boost::stacktrace::stacktrace() << '\n';
  
 	signal(signo, SIG_DFL); /* 恢复信号默认处理 */
 	raise(signo);           /* 重新发送信号 */
